@@ -105,6 +105,57 @@ public class MainFrame extends JFrame {
 		textArea.revalidate();
 	}
 	
+	private boolean initVO(EmpVO vo) {
+		
+		boolean result = false;
+		String tmpNo = tf_empNo.getText().trim();
+		if(tmpNo.length()==0) {
+			JOptionPane.showMessageDialog(MainFrame.this, "사번을 입력해주십시오.");
+			return result;
+		}
+		vo.setEmpNo(tmpNo);
+
+		String tmpName = tf_empName.getText().trim();
+		if(tmpName.length()==0) {
+			JOptionPane.showMessageDialog(MainFrame.this, "이름을 입력해주십시오.");
+			return result;
+		}
+		vo.setEmpName(tmpName);
+
+		String tmpDept = tf_empDept.getText().trim();
+		if(tmpDept.length()==0) {
+			JOptionPane.showMessageDialog(MainFrame.this, "부서를 입력해주십시오.");
+			return result;
+		}
+		vo.setEmpDept(tmpDept);
+
+		String tmpPos = tf_empPos.getText().trim();
+		if(tmpPos.length()==0) {
+			JOptionPane.showMessageDialog(MainFrame.this, "직책을 입력해주십시오.");
+			return result;
+		}
+		vo.setEmpPos(tmpPos);
+
+		String tmpDoe = tf_empDoe.getText().trim();
+		if(tmpDoe.length()==0) {
+			JOptionPane.showMessageDialog(MainFrame.this, "입사일을 입력해주십시오.");
+			return result;
+		}
+		vo.setEmpDoe(tmpDoe);
+		 result = true;
+		return result;
+	}
+	
+	private void clearTF() {
+		tf_empNo.setText("");
+		tf_empName.setText("");
+		tf_empDept.setText("");
+		tf_empPos.setText("");
+		tf_empDoe.setText("");
+
+	}
+	
+	
 	public MainFrame() {
 		
 
@@ -201,56 +252,15 @@ public class MainFrame extends JFrame {
 
 		btn_Add.addActionListener(new  ActionListener() {
 			
-			
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
 				EmpVO vo = new EmpVO();
-				String tmpNo = tf_empNo.getText().trim();
-				if(tmpNo.length()==0) {
-					JOptionPane.showMessageDialog(MainFrame.this, "사번을 입력해주십시오.");
-					return;
+				boolean valid = initVO(vo);
+				if(valid) {
+					list.add(vo);
+					JOptionPane.showMessageDialog(MainFrame.this, "해당 정보가 추가되었습니다.");
+					clearTF();
 				}
-				vo.setEmpNo(tmpNo);
-
-				String tmpName = tf_empName.getText().trim();
-				if(tmpName.length()==0) {
-					JOptionPane.showMessageDialog(MainFrame.this, "이름을 입력해주십시오.");
-					return;
-				}
-				vo.setEmpName(tmpName);
-
-				String tmpDept = tf_empDept.getText().trim();
-				if(tmpDept.length()==0) {
-					JOptionPane.showMessageDialog(MainFrame.this, "부서를 입력해주십시오.");
-					return;
-				}
-				vo.setEmpDept(tmpDept);
-
-				String tmpPos = tf_empPos.getText().trim();
-				if(tmpPos.length()==0) {
-					JOptionPane.showMessageDialog(MainFrame.this, "직책을 입력해주십시오.");
-					return;
-				}
-				vo.setEmpPos(tmpPos);
-
-				String tmpDoe = tf_empDoe.getText().trim();
-				if(tmpDoe.length()==0) {
-					JOptionPane.showMessageDialog(MainFrame.this, "입사일을 입력해주십시오.");
-					return;
-				}
-				vo.setEmpDoe(tmpDoe);
-				
-				
-				list.add(vo);
-				
-				JOptionPane.showMessageDialog(MainFrame.this, "해당 정보가 추가되었습니다.");
-				tf_empNo.setText("");
-				tf_empName.setText("");
-				tf_empDept.setText("");
-				tf_empPos.setText("");
-				tf_empDoe.setText("");
 				
 			}
 		});
@@ -279,9 +289,6 @@ public class MainFrame extends JFrame {
 				System.exit(0);
 			}
 		});
-		
-		
-		
 		
 		
 	}

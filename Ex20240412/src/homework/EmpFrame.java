@@ -33,7 +33,23 @@ public class EmpFrame extends JFrame {
 	private JTextField pos_tf;
 	private JTextField hiredate_tf;
 	private JTextArea textArea;
+	
+	JButton btnNewButton,
+			btnNewButton_1,
+			btnNewButton_2,
+			btnNewButton_3,
+			btnNewButton_4,
+			btnNewButton_5;
 
+	// 상수화 - 사용자가 원하는 작업을 구별하기 위해 필요한 상수
+	
+	final static int TOTAL = 4; 
+	final static int ADD = 3; 
+	final static int DELETE = 2; 
+	final static int SEARCH = 1; 
+	final static int NONE = 0;
+	
+	int cmd;
 	
 	
 	// 객체를 저장할 ArrayList 준비
@@ -71,6 +87,7 @@ public class EmpFrame extends JFrame {
 		list = new ArrayList<>();
 		
 		f = new File(path);
+		
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 755, 300);
@@ -152,7 +169,7 @@ public class EmpFrame extends JFrame {
 		flowLayout_5.setAlignment(FlowLayout.RIGHT);
 		contentPane.add(panel_2, BorderLayout.SOUTH);
 		
-		JButton btnNewButton = new JButton("전체");
+		btnNewButton = new JButton("전체");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				viewTotal();
@@ -160,11 +177,15 @@ public class EmpFrame extends JFrame {
 		});
 		panel_2.add(btnNewButton);
 		
-		JButton btnNewButton_1 = new JButton("추가");
+		btnNewButton_1 = new JButton("추가");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// [추가] 버튼을 클릭했을 때 수행
 				
+				if(cmd != ADD) {
+					cmd = ADD;
+				} else {
+									
 				// 사용자가 입력한 사번, 이름,... 값을 가져온다.
 				String empno = empno_tf.getText().trim();
 				String ename = ename_tf.getText().trim();
@@ -179,22 +200,52 @@ public class EmpFrame extends JFrame {
 				
 				// 저장완료의 의미로 메시지 창 보여주기
 				JOptionPane.showMessageDialog(EmpFrame.this, "저장 완료");
+				
+				cmd = NONE;
+				}
+				initTxt();
+				initBtn();
 			}
 		});
 		panel_2.add(btnNewButton_1);
 		
-		JButton btnNewButton_2 = new JButton("삭제");
+		btnNewButton_2 = new JButton("삭제");
 		panel_2.add(btnNewButton_2);
 		
-		JButton btnNewButton_3 = new JButton("검색");
+		btnNewButton_3 = new JButton("검색");
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(EmpFrame.this.getWidth());
+				if(cmd!=SEARCH) {
+					cmd = SEARCH;
+				} else {
+					
+					
+					cmd = NONE;
+				}
+				initTxt();
+				initBtn();
 			}
 		});
-		panel_2.add(btnNewButton_3);
+		panel_2.add(btnNewButton_3); 
 		
-		JButton btnNewButton_4 = new JButton("종료");
+		btnNewButton_4 = new JButton("종료");
+		btnNewButton_4.addActionListener(new ActionListener() { 
+			public void actionPerformed(ActionEvent e) {
+				saveList();
+				closed();
+				System.exit(0);
+			}
+		});
+		
+		btnNewButton_5 = new JButton("취소");
+		btnNewButton_5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cmd = NONE;
+				initTxt();
+				initBtn();
+			}
+		});
+		panel_2.add(btnNewButton_5);
 		panel_2.add(btnNewButton_4);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -202,6 +253,12 @@ public class EmpFrame extends JFrame {
 		
 		textArea = new JTextArea();
 		scrollPane.setViewportView(textArea);
+		
+		// 파일로부터 ArrayList를 가져와 list에 저장
+		readList();
+		
+		initTxt();
+		initBtn();
 	}
 	
 	
@@ -278,6 +335,60 @@ public class EmpFrame extends JFrame {
 		// sb가 가지고 있는 문자열의 집합을 JTextArea에 표현
 		textArea.setText(sb.toString());
 		
+	}
+	
+	
+	private void initTxt() {
+		empno_tf.setEditable(false);
+		ename_tf.setEditable(false);
+		dept_tf.setEditable(false);
+		pos_tf.setEditable(false);
+		hiredate_tf.setEditable(false);
+		switch(cmd) {
+		case ADD: 
+			empno_tf.setEditable(true);
+			ename_tf.setEditable(true);
+			dept_tf.setEditable(true);
+			pos_tf.setEditable(true);
+			hiredate_tf.setEditable(true);
+			break;
+		case DELETE:
+			empno_tf.setEditable(true);
+			break;
+		case SEARCH:
+			ename_tf.setEditable(true);
+			break;
+			
+		}
+	}
+	
+	private void initBtn() {
+		btnNewButton.setEnabled(false);
+		btnNewButton_1.setEnabled(false);
+		btnNewButton_2.setEnabled(false);
+		btnNewButton_3.setEnabled(false);
+		btnNewButton_4.setEnabled(false);
+		switch (cmd) {
+		case ADD:
+			btnNewButton_1.setEnabled(true);
+			break;
+		case SEARCH:
+			btnNewButton_3.setEnabled(true);
+			break;
+		case DELETE:
+			btnNewButton_2.setEnabled(true);
+			break;
+		case NONE:
+			btnNewButton.setEnabled(true);
+			btnNewButton_1.setEnabled(true);
+			btnNewButton_2.setEnabled(true);
+			btnNewButton_3.setEnabled(true);
+			btnNewButton_4.setEnabled(true);
+			
+			
+			
+			
+		}
 	}
 
 }
