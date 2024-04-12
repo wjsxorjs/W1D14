@@ -70,6 +70,16 @@ public class SpaceFrame extends JFrame {
 			}
 		});
 	}
+	
+	private void createBullet() {
+		Bullet b = new Bullet(SpaceFrame.this);
+		
+		b.setX(gunX);
+		b.setY(gunY);
+		
+		b_list.add(b);
+		b.start();
+	}
 
 	/**
 	 * Create the frame.
@@ -130,6 +140,7 @@ public class SpaceFrame extends JFrame {
 					if(gunX<=0 - move) {
 						gunX = panel.getWidth();
 					}
+					createBullet();
 					break;
 					
 				case KeyEvent.VK_RIGHT:
@@ -137,11 +148,12 @@ public class SpaceFrame extends JFrame {
 					if(gunX>=panel.getWidth()) {
 						gunX = 0 - move;
 					}
+					createBullet();
 					break;
 				case KeyEvent.VK_UP:
 					speed++;
-					if(speed>50) {
-						speed = 50;
+					if(speed>100) {
+						speed = 100;
 						JOptionPane.showMessageDialog(panel, "너무 빨라요!");
 					}
 					break;
@@ -155,13 +167,7 @@ public class SpaceFrame extends JFrame {
 					break;
 					
 				case KeyEvent.VK_SPACE:
-					Bullet b = new Bullet(SpaceFrame.this);
-					
-					b.setX(gunX);
-					b.setY(gunY);
-					
-					b_list.add(b);
-					b.start();
+					createBullet();
 					break;
 				}
 			}

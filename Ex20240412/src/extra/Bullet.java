@@ -59,6 +59,7 @@ public class Bullet extends Thread{
 				Thread.sleep(5);
 			} catch (Exception e) {}
 		}
+		sf.b_list.remove(this);
 		
 	}
 	
